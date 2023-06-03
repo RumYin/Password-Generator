@@ -4,7 +4,7 @@ import random
 import nltk
 from PIL import ImageTk, Image
 
-image=Image.open(r'new image path here')
+image=Image.open(r'matrix_usa.jpg')
 image=image.resize((700,500), Image.LANCZOS)
 
 nltk.download('words')
