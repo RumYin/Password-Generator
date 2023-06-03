@@ -1,0 +1,104 @@
+import tkinter as tk
+from tkinter import Tk, Label, Entry, Button, Toplevel, messagebox
+import random
+import nltk
+from PIL import ImageTk, Image
+
+image=Image.open(r'new image path here')
+image=image.resize((700,500), Image.LANCZOS)
+
+nltk.download('words')
+english_words=nltk.corpus.words.words()
+chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@$%^&*(),.'
+
+def password_generate():
+    number = int(pw_L.get())
+    length = int(pw_number.get())
+    generated_passwords=[]
+    
+    for _ in range(number):
+        password=''.join(random.choice(chars) for _ in range(length))
+        generated_passwords.append(password)
+        output_label.config(text='\n'.join(generated_passwords))
+
+def passphrase_generate():
+    num_words=int(pp_number.get())
+    words=random.sample(english_words, num_words)
+    output_label.config(text=' '.join(words))
+
+def resize_image(event):
+    new_width=event.width
+    new_height=event.height
+    resized_image= original_image.resize((new_width, new_height))
+    background_image=ImageTk.PhotoImage(resized_image)
+    background_label.config(image=background_image)
+    background_label.image=background_image
+
+
+window= tk.Tk()
+window.title=("Passphrase Geneartor")
+window.geometry('900x500')
+window.maxsize(1000,1000)
+
+original_image=Image.open(r'C:\Users\kanno\Desktop\Matrix_PWGenerator\matrix_usa.jpg')
+background_image=ImageTk.PhotoImage(image)
+background_label = tk.Label(window, image=background_image)
+background_label.place(x=0, y=0, relwidth=1, relheight=1)
+background_label.bind('<Configure>', resize_image)
+
+
+window_frame=tk.Frame(window,bg='green')
+#widgets created be=low
+
+
+
+#these can be deletd or altered
+welcome_label=tk.Label(window, bg='black', fg='green', text="Welcome to Credential Generator", font=("ariel", 20))
+
+#password widgets
+pw_length = tk.Label(window, bg='black', fg='green', text="Password Length:", font=('ariel', 16))
+pw_L = tk.Entry(window, bg='black', fg='green',font=('ariel', 16))#add def(create passsword) funcitons
+pw_numberL = tk.Label(window, bg='black', fg='green', text="How Many Passwords:", font=('ariel', 16))#add def(create passsword) funcitons
+pw_number = tk.Entry(window, bg='black', fg='green',font=('ariel', 16))
+
+#passphrase widgets
+
+pp = tk.Label(window, bg='black', fg='green', text="# of Words in Passphrase:", font=('ariel', 16))
+pp_number = tk.Entry(window, bg='black', fg='green',font=('ariel', 16))
+
+
+#buttons
+pp_button = tk.Button(window, bg='black', fg='green', text='Generate Passphrase', font=('ariel',10), command=passphrase_generate)
+pw_button = tk.Button(window, bg='black', fg='green', text='Generate Password', font=('ariel',10), command=password_generate)
+exit_button=tk.Button(window, bg='black', fg='green', text='EXIT', font=('ariel',10), command=window_frame.destroy)
+
+#output box
+output=tk.Entry(window, bg='black', fg='green', text=' ',font=('ariel', 16))
+output_label=tk.Label(window, bg='black', fg='green', text=" ", font=('ariel', 16))
+
+#place widgets (above) on window screen below
+#password widgets
+welcome_label.grid(row=0, column=1, columnspan=1,pady=10,)
+pw_length.grid(row=2, column=0, pady=5)
+pw_L.grid(row=2, column=1, pady=5)
+pw_numberL.grid(row=3, column=0, pady=5)
+pw_number.grid(row=3, column=1, pady=5)
+#passphrase widgets
+pp.grid(row=5, column=0, pady=5)
+pp_number.grid(row=5, column=1, pady=5)
+#buttons
+pp_button.grid(row=6, column=1, pady=5)
+pw_button.grid(row=6, column=0, pady=5)
+exit_button.grid(row=7, column=0, pady=5)
+
+#output widget
+
+output_label.grid(row=8, column=1, pady=10)
+
+
+
+window_frame.grid()
+
+window.mainloop()
+
+
